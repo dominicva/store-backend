@@ -4,6 +4,8 @@ import morgan from 'morgan';
 
 const PORT = 3000;
 
+async function testF() {}
+
 const app = express();
 
 app.use(json());
