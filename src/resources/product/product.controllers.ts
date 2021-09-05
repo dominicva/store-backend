@@ -16,8 +16,9 @@ async function getProductsController(req: Request, res: Response) {
 async function createProductController(req: Request, res: Response) {
   try {
     const product: Product = req.body;
-    await create(product);
-    res.status(201).end();
+    const newProduct = await create(product);
+    console.log(newProduct);
+    res.status(201).json({ data: newProduct });
   } catch (err) {
     console.error(`Error posting new product to db :: ${err}`);
     res.status(500).end();

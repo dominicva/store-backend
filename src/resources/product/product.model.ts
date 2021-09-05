@@ -23,7 +23,7 @@ class ProductStore {
     }
   }
 
-  async create(product: Product): Promise<Product> {
+  async create(product: Product): Promise<void> {
     try {
       const { name, category, previous_owner, weight, price } = product;
       const conn = await client.connect();
@@ -38,18 +38,10 @@ class ProductStore {
           ) 
           VALUES ($1, $2, $3, $4, $5)`;
 
-      const result = await conn.query(sql, [
-        name,
-        category,
-        previous_owner,
-        weight,
-        price,
-      ]);
-
-      const newProduct = result.rows[0];
+      await conn.query(sql, [name, category, previous_owner, weight, price]);
 
       conn.release();
-      return newProduct;
+      return;
     } catch (error) {
       throw new Error(`Cannot add product to db :: ${error}`);
     }
