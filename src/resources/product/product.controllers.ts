@@ -3,7 +3,7 @@ import { Product, ProductStore } from './product.model';
 
 const { index, create } = new ProductStore();
 
-async function (req: Request, res: Response) {
+async function getProductsController(req: Request, res: Response) {
   try {
     const products = await index();
     res.status(200).json(products);
@@ -23,3 +23,5 @@ async function createProductController(req: Request, res: Response) {
     res.status(500).end();
   }
 }
+
+export { getProductsController, createProductController };
