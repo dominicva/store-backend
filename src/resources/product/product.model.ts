@@ -46,6 +46,22 @@ class ProductStore {
       throw new Error(`Cannot add product to db :: ${error}`);
     }
   }
+
+  async show(id: string): Promise<Product> {
+    try {
+      const conn = await client.connect();
+
+      const sql = 'SELECT * FROM products WHERE id=($1)';
+
+      const result = await conn.query(sql, [id]);
+
+      conn.release();
+
+      return result.rows[0];
+    } catch (err) {
+      throw new Error(`Could not find product ${id}. Error: ${err}`);
+    }
+  }
 }
 
 export { Product, ProductStore };
