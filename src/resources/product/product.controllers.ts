@@ -3,10 +3,7 @@ import { Product, ProductStore } from './product.model';
 
 const { index, create, show } = new ProductStore();
 
-async function getProductsController(
-  req: Request,
-  res: Response
-): Promise<void> {
+async function getProductsController(_: Request, res: Response): Promise<void> {
   try {
     const products = await index();
     res.status(200).json(products);
@@ -31,9 +28,13 @@ async function createProductController(
   }
 }
 
-async function showProductController(req: Request, res: Response) {
+async function showProductController(
+  req: Request,
+  res: Response
+): Promise<void> {
+  const { id } = req.params;
+
   try {
-    const { id } = req.params;
     const product = await show(id);
     res.status(200).json(product);
   } catch (err) {
