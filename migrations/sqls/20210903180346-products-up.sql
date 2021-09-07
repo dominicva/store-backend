@@ -6,4 +6,4 @@ CREATE TABLE products
   previous_owner VARCHAR(100),
   weight integer,
   price decimal
-)
+);
