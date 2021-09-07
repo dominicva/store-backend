@@ -19,6 +19,7 @@ function createOne(model: any) {
   return async function createOneController(req: Request, res: Response) {
     try {
       const data = req.body;
+      console.log('data:', data);
       const newResource = await model.create(data);
       console.log(newResource);
       res.status(201).json({ data: newResource });

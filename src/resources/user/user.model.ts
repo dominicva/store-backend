@@ -12,10 +12,6 @@ type User = {
   password: string;
 };
 
-interface UserStore {
-  tableName: string;
-}
-
 class UserStore extends Store {
   constructor() {
     super('users');
@@ -60,12 +56,11 @@ class UserStore extends Store {
           (
             first_name, 
             last_name, 
-            password, 
+            password
           ) 
-          VALUES ($1, $2, $3) RETURNING *`;
+          VALUES ($1, $2, $3)`;
 
       const hash = bcrypt.hashSync(`${password}${PEPPER}`, Number(SALT_ROUNDS));
-
       const result = await conn.query(sql, [firstName, lastName, hash]);
       const user = result.rows[0];
 
@@ -100,4 +95,4 @@ class UserStore extends Store {
   }
 }
 
-export { User, UserStore };
+export default UserStore;
