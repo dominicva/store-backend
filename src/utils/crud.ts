@@ -31,7 +31,23 @@ function createOne(model: any) {
   };
 }
 
-export { getAll, createOne };
+function showOne(model: any) {
+  return async function showOneController(req: Request, res: Response) {
+    const { id } = req.params;
+
+    try {
+      const resource = await model.show(id);
+      res.status(200).json(resource);
+    } catch (err) {
+      console.error(
+        `Error fetching ${model.tableName} resource wtith id: ${id}. ${err}`
+      );
+      res.status(500).end();
+    }
+  };
+}
+
+export { getAll, createOne, showOne };
 // import client from '../db';
 // // import { Product } from '../resources/product/product.model';
 // // import { User } from '../resources/user/user.model';
