@@ -76,4 +76,4 @@ class ProductStore extends Store {
   }
 }
 
-export { Product, ProductStore };
+export default ProductStore;
