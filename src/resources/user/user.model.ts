@@ -11,7 +11,15 @@ type User = {
   password: string;
 };
 
+interface UserStore {
+  tableName: string;
+}
+
 class UserStore {
+  constructor() {
+    this.tableName = 'users';
+  }
+
   async index(): Promise<User[]> {
     try {
       const conn = await client.connect();

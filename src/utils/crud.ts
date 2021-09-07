@@ -1,3 +1,21 @@
+import { Request, Response } from 'express';
+
+function getAll(model: any) {
+  return async function getAllController(
+    _: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const result = await model.index();
+      res.status(200).json(result);
+    } catch (err) {
+      console.error(`Error getting ${model.tableName} from db :: ${err}`);
+      res.status(500).end();
+    }
+  };
+}
+
+export { getAll };
 // import client from '../db';
 // // import { Product } from '../resources/product/product.model';
 // // import { User } from '../resources/user/user.model';

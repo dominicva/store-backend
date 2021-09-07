@@ -1,17 +1,9 @@
-import { Request, Response } from 'express';
+import { Request, Response, RequestParamHandler } from 'express';
 import { Product, ProductStore } from './product.model';
-
-const { index, create, show } = new ProductStore();
-
-async function getProductsController(_: Request, res: Response): Promise<void> {
-  try {
-    const products = await index();
-    res.status(200).json(products);
-  } catch (err) {
-    console.error(`Error getting products from db :: ${err}`);
-    res.status(500).end();
-  }
-}
+import { getAll } from '../../utils/crud';
+// const { index, create, show } = new ProductStore();
+const productStore = new ProductStore();
+const { show, create } = productStore;
 
 async function createProductController(
   req: Request,
@@ -43,8 +35,10 @@ async function showProductController(
   }
 }
 
-export {
-  getProductsController,
+const productControllers = {
+  getProductsController: getAll(productStore),
   createProductController,
   showProductController,
 };
+
+export default productControllers;
