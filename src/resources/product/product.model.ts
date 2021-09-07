@@ -1,4 +1,5 @@
 import client from '../../db';
+import Store from '../../utils/Store';
 
 type Product = {
   name: string;
@@ -8,7 +9,11 @@ type Product = {
   price: number;
 };
 
-class ProductStore {
+class ProductStore extends Store {
+  constructor() {
+    super('products');
+  }
+
   async index(): Promise<Product[]> {
     try {
       const conn = await client.connect();
@@ -23,9 +28,9 @@ class ProductStore {
     }
   }
 
-  async create(product: Product): Promise<void> {
+  async create(p: Product): Promise<Product> {
     try {
-      const { name, category, previous_owner, weight, price } = product;
+      const { name, category, previous_owner, weight, price } = p;
       const conn = await client.connect();
 
       const sql = `INSERT INTO products 
@@ -36,12 +41,19 @@ class ProductStore {
             weight, 
             price
           ) 
-          VALUES ($1, $2, $3, $4, $5)`;
+          VALUES ($1, $2, $3, $4, $5) RETURNING *`;
 
-      await conn.query(sql, [name, category, previous_owner, weight, price]);
+      const result = await conn.query(sql, [
+        name,
+        category,
+        previous_owner,
+        weight,
+        price,
+      ]);
+      const product: Product = result.rows[0];
 
       conn.release();
-      return;
+      return product;
     } catch (error) {
       throw new Error(`Cannot add product to db :: ${error}`);
     }

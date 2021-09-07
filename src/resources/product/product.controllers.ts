@@ -1,24 +1,9 @@
 import { Request, Response, RequestParamHandler } from 'express';
 import { Product, ProductStore } from './product.model';
-import { getAll } from '../../utils/crud';
+import { getAll, createOne } from '../../utils/crud';
 // const { index, create, show } = new ProductStore();
 const productStore = new ProductStore();
 const { show, create } = productStore;
-
-async function createProductController(
-  req: Request,
-  res: Response
-): Promise<void> {
-  try {
-    const product: Product = req.body;
-    const newProduct = await create(product);
-    console.log(newProduct);
-    res.status(201).json({ data: newProduct });
-  } catch (err) {
-    console.error(`Error posting new product to db :: ${err}`);
-    res.status(500).end();
-  }
-}
 
 async function showProductController(
   req: Request,
@@ -37,7 +22,7 @@ async function showProductController(
 
 const productControllers = {
   getProductsController: getAll(productStore),
-  createProductController,
+  createProductController: createOne(productStore),
   showProductController,
 };
 

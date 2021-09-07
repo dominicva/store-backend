@@ -1,6 +1,7 @@
-import client from '../../db';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
+import client from '../../db';
+import Store from '../../utils/Store';
 dotenv.config();
 
 const { PEPPER, SALT_ROUNDS } = process.env;
@@ -15,9 +16,9 @@ interface UserStore {
   tableName: string;
 }
 
-class UserStore {
+class UserStore extends Store {
   constructor() {
-    this.tableName = 'users';
+    super('users');
   }
 
   async index(): Promise<User[]> {

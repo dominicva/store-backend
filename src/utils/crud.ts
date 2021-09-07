@@ -15,7 +15,23 @@ function getAll(model: any) {
   };
 }
 
-export { getAll };
+function createOne(model: any) {
+  return async function createOneController(req: Request, res: Response) {
+    try {
+      const data = req.body;
+      const newResource = await model.create(data);
+      console.log(newResource);
+      res.status(201).json({ data: newResource });
+    } catch (err) {
+      console.error(
+        `Error creating new resource in ${model.tableName} table :: ${err}`
+      );
+      res.status(500).end();
+    }
+  };
+}
+
+export { getAll, createOne };
 // import client from '../db';
 // // import { Product } from '../resources/product/product.model';
 // // import { User } from '../resources/user/user.model';
