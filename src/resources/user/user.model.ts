@@ -58,7 +58,7 @@ class UserStore extends Store {
             last_name, 
             password
           ) 
-          VALUES ($1, $2, $3)`;
+          VALUES ($1, $2, $3) RETURNING first_name firstName, last_name lastName`;
 
       const hash = bcrypt.hashSync(`${password}${PEPPER}`, Number(SALT_ROUNDS));
       const result = await conn.query(sql, [firstName, lastName, hash]);

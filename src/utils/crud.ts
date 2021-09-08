@@ -25,7 +25,7 @@ function createOne(model: any) {
     try {
       const data = req.body;
       const newResource = await model.create(data);
-      const token = jwt.sign({ resource: newResource }, TOKEN_SECRET);
+      const token = jwt.sign({ newResource }, TOKEN_SECRET as jwt.Secret);
       console.log(token);
       res.status(201).json(token);
     } catch (err) {
